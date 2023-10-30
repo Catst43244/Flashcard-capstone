@@ -5,16 +5,21 @@ import random as ra
 class cards:
     def __init__(self):
         self.remove = []
+        self.missed = []
+        #might be a problem. repeat idems
         self.data = pd.read_excel('database.xlsx')
-        self.TermsLeft = self.data['TERMS'].values.tolist()        
+        self.TermsLeft = self.data['TERMS'].values.tolist() 
+        #problem: t in terms left should not be capitatilized       
         self.POS = ra.randrange(0,len(self.data))
         self.card = self.data.iloc[self.POS]
         self.cardTerm = str(self.card.loc["TERMS"])
         self.cardDef = str(self.card.loc["DEF"])
         self.buttons = True
         self.debug1 = input("debug on or off")
+        #problem: have a var that takes the input into true and false 
         self.debug = self.debug1.upper()
-    def rerun(self,removeCard = False):
+        self.missedCounter = 0
+    def rerun(self,knownCard = False):
         if self.debug == "ON":
             print("current position")
             print(self.POS)
@@ -24,41 +29,49 @@ class cards:
             print(self.cardDef)
             print("currently in remove")
             print(self.remove)
-        if removeCard == True:
+        if knownCard == True:
             self.remove.append(self.POS)
             if self.debug == "ON":
                 print("this position shouldn't show up again")
                 print(self.POS)
+        if knownCard == False:
+            if self.POS != self.missed:
+                self.missed.append(self.POS)
+            self.missedCounter += 1
         self.lastPOS = self.POS
         self.POS = ra.randrange(0,len(self.TermsLeft))
-        if self.debug == "Y":
+        if self.debug == "ON":
             print("new position #1")
             print(self.POS)
         if self.POS in self.remove:
-            if self.debug == "Y":
+            if self.debug == "ON":
                 print("current position is in remove. will pick a different number")
             while self.POS in self.remove:
                 self.POS = ra.randrange(0,len(self.TermsLeft))
                 if len(self.remove) >= len(self.TermsLeft):
-                    if self.debug == "Y":
+                    if self.debug == "ON":
                         print("all positions are in remove")
+                        #error: can go over terms left which should not be possable
                     self.buttons = False
                     break
         if self.POS == self.lastPOS:
-            if self.debug == "Y":
+            if self.debug == "ON":
                 print("the new position can't be the same as the last.will pick a different number")
             self.rerun()
             pass
         self.card = self.data.iloc[self.POS]
         self.cardTerm = str(self.card.loc["TERMS"])
         self.cardDef = str(self.card.loc["DEF"])
-        if self.debug == "Y":
+        if self.debug == "ON":
             print("new position. final number")
             print(self.POS)
             print("the term is")
             print(self.cardTerm)
             print("and the answer is")
             print(self.cardDef)
+            print("missed counter/list")
+            print(self.missedCounter)
+            print(self.missed)
             print("END OF CARDS")
             print("________________________")
         pass
@@ -126,7 +139,7 @@ class FlashcardsUiApp:
             self.viewedCard.configure(state = 'disabled')
         else:
             self.viewedCard.configure(state = 'normal')
-            self.c.rerun(removeCard = True)
+            self.c.rerun(knownCard = True)
             self.setText(self.c.cardTerm)
             self.viewedCard.configure(state = 'disabled')
             pass
@@ -134,7 +147,7 @@ class FlashcardsUiApp:
 
     def notKnowBu(self):
         self.viewedCard.configure(state = 'normal')
-        self.c.rerun(removeCard = False)
+        self.c.rerun(knownCard = False)
         self.setText(self.c.cardTerm)
         self.viewedCard.configure(state = 'disabled')
         pass
