@@ -8,7 +8,7 @@ class cards:
         self.missed = []
         #might be a problem. repeat idems
         self.data = pd.read_excel('database.xlsx')
-        self.TermsLeft = self.data['TERMS'].values.tolist() 
+        self.termsLeft = self.data['TERMS'].values.tolist() 
         #problem: t in terms left should not be capitatilized       
         self.POS = ra.randrange(0,len(self.data))
         self.card = self.data.iloc[self.POS]
@@ -39,7 +39,7 @@ class cards:
                 self.missed.append(self.POS)
             self.missedCounter += 1
         self.lastPOS = self.POS
-        self.POS = ra.randrange(0,len(self.TermsLeft))
+        self.POS = ra.randrange(0,len(self.termsLeft))
         if self.debug == "ON":
             print("new position #1")
             print(self.POS)
@@ -47,8 +47,8 @@ class cards:
             if self.debug == "ON":
                 print("current position is in remove. will pick a different number")
             while self.POS in self.remove:
-                self.POS = ra.randrange(0,len(self.TermsLeft))
-                if len(self.remove) >= len(self.TermsLeft):
+                self.POS = ra.randrange(0,len(self.termsLeft))
+                if len(self.remove) >= len(self.termsLeft):
                     if self.debug == "ON":
                         print("all positions are in remove")
                         #error: can go over terms left which should not be possable
