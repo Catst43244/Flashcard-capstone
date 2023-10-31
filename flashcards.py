@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
+from playsound import playsound
 class cards:
     def __init__(self):
         self.remove = []
@@ -38,6 +39,8 @@ class cards:
             if self.POS != self.missed:
                 self.missed.append(self.POS)
             self.missedCounter += 1
+            if self.missedCounter == 2:
+                #playsound()
         self.lastPOS = self.POS
         self.POS = ra.randrange(0,len(self.termsLeft))
         if self.debug == "ON":
