@@ -132,12 +132,12 @@ class FlashcardsUiApp:
     def KnowBu(self):
         if self.c.buttons == False:
             self.viewedCard.configure(state = 'normal')
-            summaryText = "all cards studied"
+            summaryText = "all cards studied. Here's what you got wrong and their answers"
             for missedCardPOS in self.c.missed:
                 card = self.c.data.iloc[missedCardPOS]
                 cardTerm = str(card.loc["TERMS"])
                 cardDef = str(card.loc["DEF"])
-                summaryText = summaryText + cardTerm
+                summaryText = summaryText + "\n\n" + cardTerm + "\n" + cardDef
             self.setText(summaryText)
             self.filpCardButton["state"] = "disabled"
             self.notKnowButton["state"] = "disabled"
