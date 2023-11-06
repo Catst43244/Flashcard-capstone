@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
 from playsound import playsound
+MISSED_COUNTER_WARNING_SOUND = 2
 class cards:
     def __init__(self):
         self.remove = []
@@ -20,6 +21,7 @@ class cards:
         #problem: have a var that takes the input into true and false 
         self.debug = self.debug1.upper()
         self.missedCounter = 0
+        
     def rerun(self,knownCard = False):
         if self.debug == "ON":
             print("current position")
@@ -39,8 +41,10 @@ class cards:
             if self.POS != self.missed:
                 self.missed.append(self.POS)
             self.missedCounter += 1
-            if self.missedCounter == 2:
-                #playsound()
+            match self.missedCounter :
+                case MISSED_COUNTER_WARNING_SOUND:
+                    #playsound()
+                    print("Playsound")
         self.lastPOS = self.POS
         self.POS = ra.randrange(0,len(self.termsLeft))
         if self.debug == "ON":
