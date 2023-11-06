@@ -3,7 +3,9 @@ import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
 from playsound import playsound
-
+import threading
+def playSoundFun():
+    playsound("walking-on-a-wooden-floor-32056.mp3")
 class cards:
     MISSED_COUNTER_WARNING_SOUND = 2
     MISSED_COUNTER_GAME_OVER = 4
@@ -45,7 +47,8 @@ class cards:
             self.missedCounter += 1
             match self.missedCounter:
                 case cards.MISSED_COUNTER_WARNING_SOUND:
-                    #playsound()
+                    download_thread = threading.Thread(target=playSoundFun, name="Downloader")
+                    download_thread.start()
                     print("Playsound")
                 case cards.MISSED_COUNTER_GAME_OVER:
                     print("GAME OVER")
