@@ -3,8 +3,10 @@ import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
 from playsound import playsound
-MISSED_COUNTER_WARNING_SOUND = 2
+
 class cards:
+    MISSED_COUNTER_WARNING_SOUND = 2
+    MISSED_COUNTER_GAME_OVER = 4
     def __init__(self):
         self.remove = []
         self.missed = []
@@ -41,10 +43,12 @@ class cards:
             if self.POS != self.missed:
                 self.missed.append(self.POS)
             self.missedCounter += 1
-            match self.missedCounter :
-                case MISSED_COUNTER_WARNING_SOUND:
+            match self.missedCounter:
+                case cards.MISSED_COUNTER_WARNING_SOUND:
                     #playsound()
                     print("Playsound")
+                case cards.MISSED_COUNTER_GAME_OVER:
+                    print("GAME OVER")
         self.lastPOS = self.POS
         self.POS = ra.randrange(0,len(self.termsLeft))
         if self.debug == "ON":
