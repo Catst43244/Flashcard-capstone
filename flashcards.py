@@ -47,7 +47,7 @@ class cards:
             self.missedCounter += 1
             match self.missedCounter:
                 case cards.MISSED_COUNTER_WARNING_SOUND:
-                    download_thread = threading.Thread(target=playSoundFun, name="Downloader")
+                    download_thread = threading.Thread(target=playSoundFun, name="Playsound")
                     download_thread.start()
                     print("Playsound")
                 case cards.MISSED_COUNTER_GAME_OVER:
