@@ -6,6 +6,8 @@ from playsound import playsound
 import threading
 def playSoundFun():
     playsound("walking-on-a-wooden-floor-32056.mp3")
+def gameOverSound():
+    playsound("fuzzy-jumpscare-80560.mp3")
 class cards:
     MISSED_COUNTER_WARNING_SOUND = 2
     MISSED_COUNTER_GAME_OVER = 4
@@ -25,7 +27,7 @@ class cards:
         #problem: have a var that takes the input into true and false 
         self.debug = self.debug1.upper()
         self.missedCounter = 0
-        
+        self.GAMEOVER = False
     def rerun(self,knownCard = False):
         if self.debug == "ON":
             print("current position")
@@ -47,11 +49,13 @@ class cards:
             self.missedCounter += 1
             match self.missedCounter:
                 case cards.MISSED_COUNTER_WARNING_SOUND:
-                    download_thread = threading.Thread(target=playSoundFun, name="Playsound")
-                    download_thread.start()
+                    playSoundNow = threading.Thread(target=playSoundFun, name="Playsound")
+                    playSoundNow.start()
                     print("Playsound")
                 case cards.MISSED_COUNTER_GAME_OVER:
                     print("GAME OVER")
+                    self.GAMEOVER = True
+                    self.buttons = False
         self.lastPOS = self.POS
         self.POS = ra.randrange(0,len(self.termsLeft))
         if self.debug == "ON":
@@ -145,8 +149,21 @@ class FlashcardsUiApp:
         pass
     def KnowBu(self):
         if self.c.buttons == False:
+            self.endScreen()
+        else:
+            self.viewedCard.configure(state = 'normal')
+            self.c.rerun(knownCard = True)
+            self.setText(self.c.cardTerm)
+            self.viewedCard.configure(state = 'disabled')
+            pass
+
+    def endScreen(self):
             self.viewedCard.configure(state = 'normal')
             summaryText = "all cards studied. Here's what you got wrong and their answers"
+            if self.c.GAMEOVER == True:
+                summaryText = "GAMEOVER. Here's why"
+                playSoundNow = threading.Thread(target=gameOverSound, name="Playsound")
+                playSoundNow.start()
             for missedCardPOS in self.c.missed:
                 card = self.c.data.iloc[missedCardPOS]
                 cardTerm = str(card.loc["TERMS"])
@@ -157,16 +174,10 @@ class FlashcardsUiApp:
             self.notKnowButton["state"] = "disabled"
             self.knowButton["state"] = "disabled"
             self.viewedCard.configure(state = 'disabled')
-        else:
-            self.viewedCard.configure(state = 'normal')
-            self.c.rerun(knownCard = True)
-            self.setText(self.c.cardTerm)
-            self.viewedCard.configure(state = 'disabled')
-            pass
-
-
     def notKnowBu(self):
         self.viewedCard.configure(state = 'normal')
+        if self.c.buttons == False:
+            self.endScreen()
         self.c.rerun(knownCard = False)
         self.setText(self.c.cardTerm)
         self.viewedCard.configure(state = 'disabled')
