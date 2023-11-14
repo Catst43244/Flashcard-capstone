@@ -3,7 +3,6 @@ import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
 from playsound import playsound
-#REMARK THIS WHEN ON LINUX
 import threading
 def playSoundFun():
     playsound("walking-on-a-wooden-floor-32056.mp3")
@@ -13,6 +12,7 @@ class cards:
     MISSED_COUNTER_WARNING_SOUND = 2
     MISSED_COUNTER_GAME_OVER = 4
     def __init__(self):
+        #problem: there are repeats in the summury screen
         self.remove = []
         self.missed = []
         self.data = pd.read_excel('database.xlsx')
