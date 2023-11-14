@@ -2,7 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
-#from playsound import playsound
+from playsound import playsound
 #REMARK THIS WHEN ON LINUX
 import threading
 def playSoundFun():
