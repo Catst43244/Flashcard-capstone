@@ -49,8 +49,8 @@ class cards:
             self.missedCounter += 1
             match self.missedCounter:
                 case cards.MISSED_COUNTER_WARNING_SOUND:
-                    playSoundNow = threading.Thread(target=playSoundFun, name="Playsound")
-                    playSoundNow.start()
+                    playWarningSoundThreading = threading.Thread(target=playSoundFun, name="Playsound")
+                    playWarningSoundThreading.start()
                     print("Playsound")
                 case cards.MISSED_COUNTER_GAME_OVER:
                     print("GAME OVER")
@@ -148,11 +148,11 @@ class FlashcardsUiApp:
         self.viewedCard.insert("1.0", Text)
         pass
     def KnowBu(self):
+        self.c.rerun(knownCard = True)
         if self.c.buttons == False:
             self.endScreen()
         else:
             self.viewedCard.configure(state = 'normal')
-            self.c.rerun(knownCard = True)
             self.setText(self.c.cardTerm)
             self.viewedCard.configure(state = 'disabled')
             pass
@@ -162,8 +162,8 @@ class FlashcardsUiApp:
             summaryText = "all cards studied. Here's what you got wrong and their answers"
             if self.c.GAMEOVER == True:
                 summaryText = "GAMEOVER. Here's why"
-                playSoundNow = threading.Thread(target=gameOverSound, name="Playsound")
-                playSoundNow.start()
+                playGameOverSoundThreading = threading.Thread(target=gameOverSound, name="Playsound")
+                playGameOverSoundThreading.start()
             for missedCardPOS in self.c.missed:
                 card = self.c.data.iloc[missedCardPOS]
                 cardTerm = str(card.loc["TERMS"])
@@ -175,12 +175,14 @@ class FlashcardsUiApp:
             self.knowButton["state"] = "disabled"
             self.viewedCard.configure(state = 'disabled')
     def notKnowBu(self):
+        self.c.rerun(knownCard = False)
         self.viewedCard.configure(state = 'normal')
         if self.c.buttons == False:
             self.endScreen()
-        self.c.rerun(knownCard = False)
-        self.setText(self.c.cardTerm)
-        self.viewedCard.configure(state = 'disabled')
+        else:
+            self.viewedCard.configure(state = 'normal')
+            self.setText(self.c.cardTerm)
+            self.viewedCard.configure(state = 'disabled')
         pass
 
     def filpCardBu(self):
