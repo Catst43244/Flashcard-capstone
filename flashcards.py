@@ -28,6 +28,8 @@ class cards:
         self.GAMEOVER = False
         self.playWarningSoundThread = threading.Thread(target=playSoundFun, name="Playsound")
         self.playGameOverSoundThread = threading.Thread(target=gameOverSound, name="Playsound")
+        self.playWarningSoundThread.daemon = True
+        self.playGameOverSoundThread.daemon = True
     def rerun(self,knownCard = False):
         if self.debug == "ON":
             print("current position")
