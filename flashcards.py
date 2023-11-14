@@ -2,7 +2,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import pandas as pd
 import random as ra
-from playsound import playsound
+#from playsound import playsound
+#REMARK THIS WHEN ON LINUX
 import threading
 def playSoundFun():
     playsound("walking-on-a-wooden-floor-32056.mp3")
@@ -21,9 +22,7 @@ class cards:
         self.cardTerm = str(self.card.loc["TERMS"])
         self.cardDef = str(self.card.loc["DEF"])
         self.buttons = True
-        self.debug1 = input("debug on or off")
         #problem: have a var that takes the input into true and false 
-        self.debug = self.debug1.upper()
         self.missedCounter = 0
         self.GAMEOVER = False
         self.playWarningSoundThread = threading.Thread(target=playSoundFun, name="Playsound")
@@ -31,20 +30,8 @@ class cards:
         self.playWarningSoundThread.daemon = True
         self.playGameOverSoundThread.daemon = True
     def rerun(self,knownCard = False):
-        if self.debug == "ON":
-            print("current position")
-            print(self.POS)
-            print("the current term is")
-            print(self.cardTerm)
-            print("and the answer is")
-            print(self.cardDef)
-            print("currently in remove")
-            print(self.remove)
         if knownCard == True:
             self.remove.append(self.POS)
-            if self.debug == "ON":
-                print("this position shouldn't show up again")
-                print(self.POS)
         if knownCard == False:
             if self.POS != self.missed:
                 self.missed.append(self.POS)
@@ -60,39 +47,18 @@ class cards:
                     self.buttons = False
         self.lastPOS = self.POS
         self.POS = ra.randrange(0,len(self.termsLeft))
-        if self.debug == "ON":
-            print("new position #1")
-            print(self.POS)
         if self.POS in self.remove:
-            if self.debug == "ON":
-                print("current position is in remove. will pick a different number")
             while self.POS in self.remove:
                 self.POS = ra.randrange(0,len(self.termsLeft))
                 if len(self.remove) >= len(self.termsLeft):
-                    if self.debug == "ON":
-                        print("all positions are in remove")
                     self.buttons = False
                     break
         if self.POS == self.lastPOS:
-            if self.debug == "ON":
-                print("the new position can't be the same as the last.will pick a different number")
             self.rerun()
             pass
         self.card = self.data.iloc[self.POS]
         self.cardTerm = str(self.card.loc["TERMS"])
         self.cardDef = str(self.card.loc["DEF"])
-        if self.debug == "ON":
-            print("new position. final number")
-            print(self.POS)
-            print("the term is")
-            print(self.cardTerm)
-            print("and the answer is")
-            print(self.cardDef)
-            print("missed counter/list")
-            print(self.missedCounter)
-            print(self.missed)
-            print("END OF CARDS")
-            print("________________________")
         pass
     
     pass
