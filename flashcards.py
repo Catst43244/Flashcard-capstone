@@ -14,10 +14,8 @@ class cards:
     def __init__(self):
         self.remove = []
         self.missed = []
-        #might be a problem. repeat idems
         self.data = pd.read_excel('database.xlsx')
-        self.termsLeft = self.data['TERMS'].values.tolist() 
-        #problem: t in terms left should not be capitatilized       
+        self.termsLeft = self.data['TERMS'].values.tolist()      
         self.POS = ra.randrange(0,len(self.data))
         self.card = self.data.iloc[self.POS]
         self.cardTerm = str(self.card.loc["TERMS"])
@@ -28,6 +26,8 @@ class cards:
         self.debug = self.debug1.upper()
         self.missedCounter = 0
         self.GAMEOVER = False
+        self.playWarningSoundThread = threading.Thread(target=playSoundFun, name="Playsound")
+        self.playGameOverSoundThread = threading.Thread(target=gameOverSound, name="Playsound")
     def rerun(self,knownCard = False):
         if self.debug == "ON":
             print("current position")
@@ -49,10 +49,10 @@ class cards:
             self.missedCounter += 1
             match self.missedCounter:
                 case cards.MISSED_COUNTER_WARNING_SOUND:
-                    playWarningSoundThreading = threading.Thread(target=playSoundFun, name="Playsound")
-                    playWarningSoundThreading.start()
+                    self.playWarningSoundThread.start()
                     print("Playsound")
                 case cards.MISSED_COUNTER_GAME_OVER:
+                    self.playGameOverSoundThread.start()
                     print("GAME OVER")
                     self.GAMEOVER = True
                     self.buttons = False
@@ -69,7 +69,6 @@ class cards:
                 if len(self.remove) >= len(self.termsLeft):
                     if self.debug == "ON":
                         print("all positions are in remove")
-                        #error: can go over terms left which should not be possable
                     self.buttons = False
                     break
         if self.POS == self.lastPOS:
@@ -100,6 +99,7 @@ class FlashcardsUiApp:
         # from cards
         self.c = cards()
         self.cardText = self.c.cardTerm
+        
         #-----
         self.flashcards = tk.Tk() if master is None else tk.Toplevel(master)
         self.flashcards.configure(
@@ -162,8 +162,6 @@ class FlashcardsUiApp:
             summaryText = "all cards studied. Here's what you got wrong and their answers"
             if self.c.GAMEOVER == True:
                 summaryText = "GAMEOVER. Here's why"
-                playGameOverSoundThreading = threading.Thread(target=gameOverSound, name="Playsound")
-                playGameOverSoundThreading.start()
             for missedCardPOS in self.c.missed:
                 card = self.c.data.iloc[missedCardPOS]
                 cardTerm = str(card.loc["TERMS"])
