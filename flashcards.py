@@ -101,32 +101,30 @@ class FlashcardsUiApp:
             relief="flat",
             takefocus=False,
             width=50,)
-        self.viewedCard.insert("1.0", self.cardText)
+        self.setText(self.c.cardTerm)
         self.viewedCard.grid(column=0, row=0)
 
 
         # Main widget
         self.mainwindow = self.flashcards
-        self.viewedCard.configure(state = 'disabled')
 
     def run(self):
         self.mainwindow.mainloop()
     def setText(self,Text):
+        self.viewedCard.configure(state = 'normal')
         self.viewedCard.delete('1.0', '10000000000.0')
         self.viewedCard.insert("1.0", Text)
+        self.viewedCard.configure(state = 'disabled')
         pass
     def KnowBu(self):
         self.c.rerun(knownCard = True)
         if self.c.buttons == False:
             self.endScreen()
         else:
-            self.viewedCard.configure(state = 'normal')
             self.setText(self.c.cardTerm)
-            self.viewedCard.configure(state = 'disabled')
             pass
 
     def endScreen(self):
-            self.viewedCard.configure(state = 'normal')
             summaryText = "all cards studied. Here's what you got wrong and their answers"
             if self.c.GAMEOVER == True:
                 summaryText = "GAMEOVER. Here's why"
@@ -139,31 +137,23 @@ class FlashcardsUiApp:
             self.filpCardButton["state"] = "disabled"
             self.notKnowButton["state"] = "disabled"
             self.knowButton["state"] = "disabled"
-            self.viewedCard.configure(state = 'disabled')
     def notKnowBu(self):
         self.c.rerun(knownCard = False)
-        self.viewedCard.configure(state = 'normal')
         if self.c.buttons == False:
             self.endScreen()
         else:
-            self.viewedCard.configure(state = 'normal')
             self.setText(self.c.cardTerm)
-            self.viewedCard.configure(state = 'disabled')
         pass
 
     def filpCardBu(self):
-        self.viewedCard.configure(state = 'normal')
         if self.cardText == self.c.cardTerm:
             self.cardText = self.c.cardDef
             self.setText(self.cardText)
-            self.viewedCard.configure(state = 'disabled')
             pass
         else:
             self.cardText = self.c.cardTerm
             self.setText(self.cardText)
-            self.viewedCard.configure(state = 'disabled')
             pass
-        self.viewedCard.configure(state = 'disabled')
         pass
     #unused code ;(
     '''
