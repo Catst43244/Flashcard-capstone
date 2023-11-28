@@ -6,9 +6,9 @@ import random as ra
 from playsound import playsound
 import threading
 def playSoundFun():
-    playsound("walking-on-a-wooden-floor-32056.mp3")
+    playsound("walking.mp3")
 def gameOverSound():
-    playsound("fuzzy-jumpscare-80560.mp3")
+    playsound("jumpscare.mp3")
 class cards:
     MISSED_COUNTER_WARNING_SOUND = 2
     MISSED_COUNTER_GAME_OVER = 4
@@ -125,6 +125,8 @@ class Ui:
         self.flipCardButton.place(x=460,y=270,width=264,height=73)
         self.flipCardButton["command"] = self.flipCardBu
         self.setText(self.c.cardTerm)
+
+
     def run(self):
         self.mainwindow.mainloop()
     def setText(self,Text):
@@ -153,9 +155,10 @@ class Ui:
                 cardDef = str(card.loc["DEF"])
                 summaryText = summaryText + "\n\n" + cardTerm + "\n" + cardDef
             self.setText(summaryText)
-            self.flipCardButton["state"] = "disabled"
-            self.notKnowButton["state"] = "disabled"
-            self.knowButton["state"] = "disabled"
+            self.flipCardButton.place_forget()
+            self.notKnowButton.place_forget()
+            self.knowButton.place_forget()
+
     def notKnowBu(self):
         self.c.rerun(knownCard = False)
         if self.c.buttons == False:

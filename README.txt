@@ -1,0 +1,1 @@
+if you are on windows OR if flashcards does not boot. Use INSTALL WINDOWS.py instead of INSTALL LINUX.sh
