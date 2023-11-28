@@ -68,7 +68,7 @@ class cards:
 class Ui:
     def __init__(self, window):
         self.c = cards()
-        self.cardText = self.c.cardTerm
+        self.displaySwitch = False
         #setting title
         window.title("Horror Flashcards")
         #setting window size
@@ -140,6 +140,7 @@ class Ui:
             self.endScreen()
         else:
             self.setText(self.c.cardTerm)
+            self.displaySwitch = False
             pass
 
     def endScreen(self):
@@ -161,16 +162,17 @@ class Ui:
             self.endScreen()
         else:
             self.setText(self.c.cardTerm)
+            self.displaySwitch = False
             pass
 
     def flipCardBu(self):
-        if self.cardText == self.c.cardTerm:
-            self.cardText = self.c.cardDef
-            self.setText(self.cardText)
+        if self.displaySwitch == False:
+            self.setText(self.c.cardDef)
+            self.displaySwitch = True
             pass
         else:
-            self.cardText = self.c.cardTerm
-            self.setText(self.cardText)
+            self.setText(self.c.cardTerm)
+            self.displaySwitch = False
             pass
         pass
 
