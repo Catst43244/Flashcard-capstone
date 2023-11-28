@@ -104,7 +104,6 @@ class Ui:
         self.notKnowButton["command"] = self.notKnowBu
 
         self.viewedCard = tk.Text(window)
-        self.viewedCard.pack()
         self.viewedCard["borderwidth"] = "1px"
         self.viewedCard["cursor"] = "arrow"
         ft = tkFont.Font(family='Times',size=23)
@@ -112,6 +111,8 @@ class Ui:
         self.viewedCard["fg"] = "#333333"
         self.viewedCard["bg"] = "#6b6c6e"
         self.viewedCard.place(x=20,y=30,width=1153,height=331)
+        self.viewedCard.tag_configure("center", justify='center')
+
        
 
         self.flipCardButton=tk.Button(window)
@@ -129,8 +130,9 @@ class Ui:
         self.mainwindow.mainloop()
     def setText(self,Text):
         self.viewedCard.configure(state = 'normal')
-        self.viewedCard.delete(1.0, "end")
-        self.viewedCard.insert(1.0, Text)
+        self.viewedCard.delete("1.0", "end")
+        self.viewedCard.insert("1.0", Text)
+        self.viewedCard.tag_add("center", "1.0", "end")
         self.viewedCard.configure(state = 'disabled')
         pass
     def KnowBu(self):
