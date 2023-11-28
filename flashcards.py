@@ -63,76 +63,25 @@ class cards:
         pass
     
     pass
-'''
-class FlashcardsUiApp:
-    def __init__(self, master = None):
-                #USE THIS LATER. it removes buttons OwO
-        #self.filpCardButton.place_forget()
-        # from cards
-        self.c = cards()
-        self.cardText = self.c.cardTerm
-        
-        #-----
-        self.flashcards = tk.Tk() if master is None else tk.Toplevel(master)
-        self.flashcards.configure(
-            height=200,
-            relief="flat",
-            takefocus=True,
-            width=200)
-        #unused code ;(
-
-        self.flashcards.bind('<Left>', self.left_key)
-        self.flashcards.bind('<Right>', self.right_key)
-        self.flashcards.bind('<KeyRelease-Down>',self.down_key)
-
-        self.knowButton = ttk.Button(self.flashcards)
-        self.knowButton.configure(text='know', width=50)
-        self.knowButton.grid(column=0, ipady=20, row=1, sticky="w")
-        self.knowButton.configure(command=self.KnowBu)
-        self.notKnowButton = ttk.Button(self.flashcards)
-        self.notKnowButton.configure(text="don't know", width=50)
-        self.notKnowButton.grid(column=0, ipady=20, row=1, sticky="e")
-        self.notKnowButton.configure(command=self.notKnowBu)
-        self.filpCardButton = ttk.Button(self.flashcards)
-        self.filpCardButton.configure(text='filp card')
-        self.filpCardButton.grid(column=0, ipady=20, row=1, sticky="n")
-        self.filpCardButton.configure(command=self.filpCardBu)
-        
-        self.viewedCard = tk.Text(self.flashcards)
-        self.viewedCard.configure(
-            font="{Arial} 20 {}",
-            height=10,
-            relief="flat",
-            takefocus=False,
-            width=50,)
-        self.setText(self.c.cardTerm)
-        self.viewedCard.grid(column=0, row=0)
-
-
-        # Main widget
-        self.mainwindow = self.flashcards
-
-'''
 
 
 class Ui:
-    def __init__(self, root, master = None):
+    def __init__(self, window):
         self.c = cards()
         self.cardText = self.c.cardTerm
         #setting title
-        root.title("undefined")
+        window.title("Horror Flashcards")
         #setting window size
         width=1200
         height=700
-        self.root = tk.Tk() if master is None else tk.Toplevel(master)
-        screenwidth = root.winfo_screenwidth()
-        screenheight = root.winfo_screenheight()
+        screenwidth = window.winfo_screenwidth()
+        screenheight = window.winfo_screenheight()
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-        root.geometry(alignstr)
-        root.resizable(width=False, height=False)
-        root.configure(bg = "#4e4f4f")
+        window.geometry(alignstr)
+        window.resizable(width=False, height=False)
+        window.configure(bg = "#4e4f4f")
 
-        self.knowButton=tk.Button(root)
+        self.knowButton=tk.Button(window)
         self.knowButton["anchor"] = "center"
         self.knowButton["bg"] = "#e9e9ed"
         ft = tkFont.Font(family='Times',size=16)
@@ -143,7 +92,7 @@ class Ui:
         self.knowButton.place(x=390,y=530,width=403,height=152)
         self.knowButton["command"] = self.KnowBu
 
-        self.notKnowButton=tk.Button(root)
+        self.notKnowButton=tk.Button(window)
         self.notKnowButton["anchor"] = "center"
         self.notKnowButton["bg"] = "#e9e9ed"
         ft = tkFont.Font(family='Times',size=16)
@@ -154,8 +103,8 @@ class Ui:
         self.notKnowButton.place(x=390,y=380,width=403,height=146)
         self.notKnowButton["command"] = self.notKnowBu
 
-        self.viewedCard=tk.Listbox(root)
-        self.viewedCard = tk.Entry(root)
+        self.viewedCard=tk.Listbox(window)
+        self.viewedCard = tk.Entry(window)
         self.viewedCard.pack()
         self.viewedCard["borderwidth"] = "1px"
         self.viewedCard["cursor"] = "arrow"
@@ -167,16 +116,16 @@ class Ui:
         self.viewedCard.place(x=20,y=30,width=1153,height=331)
        
 
-        self.filpCardButton=tk.Button(root)
-        self.filpCardButton["anchor"] = "center"
-        self.filpCardButton["bg"] = "#e9e9ed"
+        self.flipCardButton=tk.Button(window)
+        self.flipCardButton["anchor"] = "center"
+        self.flipCardButton["bg"] = "#e9e9ed"
         ft = tkFont.Font(family='Times',size=14)
-        self.filpCardButton["font"] = ft
-        self.filpCardButton["fg"] = "#000000"
-        self.filpCardButton["justify"] = "center"
-        self.filpCardButton["text"] = "Flip"
-        self.filpCardButton.place(x=460,y=270,width=264,height=73)
-        self.filpCardButton["command"] = self.filpCardBu
+        self.flipCardButton["font"] = ft
+        self.flipCardButton["fg"] = "#000000"
+        self.flipCardButton["justify"] = "center"
+        self.flipCardButton["text"] = "Flip"
+        self.flipCardButton.place(x=460,y=270,width=264,height=73)
+        self.flipCardButton["command"] = self.flipCardBu
         self.setText(self.c.cardTerm)
     def run(self):
         self.mainwindow.mainloop()
@@ -204,7 +153,7 @@ class Ui:
                 cardDef = str(card.loc["DEF"])
                 summaryText = summaryText + "\n\n" + cardTerm + "\n" + cardDef
             self.setText(summaryText)
-            self.filpCardButton["state"] = "disabled"
+            self.flipCardButton["state"] = "disabled"
             self.notKnowButton["state"] = "disabled"
             self.knowButton["state"] = "disabled"
     def notKnowBu(self):
@@ -215,7 +164,7 @@ class Ui:
             self.setText(self.c.cardTerm)
             pass
 
-    def filpCardBu(self):
+    def flipCardBu(self):
         if self.cardText == self.c.cardTerm:
             self.cardText = self.c.cardDef
             self.setText(self.cardText)
@@ -235,12 +184,12 @@ class Ui:
         self.KnowBu()
         pass
     def down_key(self,event):
-        self.filpCardBu()
+        self.flipCardBu()
         pass
     '''
 
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = Ui(root)
-    root.mainloop()
+    window = tk.Tk()
+    app = Ui(window)
+    window.mainloop()
