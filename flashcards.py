@@ -112,8 +112,7 @@ class Ui:
         self.viewedCard["bg"] = "#6b6c6e"
         self.viewedCard.place(x=20,y=30,width=1153,height=331)
         self.viewedCard.tag_configure("center", justify='center')
-
-       
+        self.viewedCard.config(wrap=tk.WORD)
 
         self.flipCardButton=tk.Button(window)
         self.flipCardButton["anchor"] = "center"
@@ -174,19 +173,6 @@ class Ui:
             self.setText(self.cardText)
             pass
         pass
-    #unused code ;(
-    '''
-    @staticmethod
-    def left_key(self,event):
-        self.notKnowBu()
-        pass
-    def right_key(self,event):
-        self.KnowBu()
-        pass
-    def down_key(self,event):
-        self.flipCardBu()
-        pass
-    '''
 
 
 if __name__ == "__main__":
