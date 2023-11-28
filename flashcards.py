@@ -103,8 +103,7 @@ class Ui:
         self.notKnowButton.place(x=390,y=380,width=403,height=146)
         self.notKnowButton["command"] = self.notKnowBu
 
-        self.viewedCard=tk.Listbox(window)
-        self.viewedCard = tk.Entry(window)
+        self.viewedCard = tk.Text(window)
         self.viewedCard.pack()
         self.viewedCard["borderwidth"] = "1px"
         self.viewedCard["cursor"] = "arrow"
@@ -112,7 +111,6 @@ class Ui:
         self.viewedCard["font"] = ft
         self.viewedCard["fg"] = "#333333"
         self.viewedCard["bg"] = "#6b6c6e"
-        self.viewedCard["justify"] = "center"
         self.viewedCard.place(x=20,y=30,width=1153,height=331)
        
 
@@ -131,8 +129,8 @@ class Ui:
         self.mainwindow.mainloop()
     def setText(self,Text):
         self.viewedCard.configure(state = 'normal')
-        self.viewedCard.delete(0, "end")
-        self.viewedCard.insert(0, Text)
+        self.viewedCard.delete(1.0, "end")
+        self.viewedCard.insert(1.0, Text)
         self.viewedCard.configure(state = 'disabled')
         pass
     def KnowBu(self):
