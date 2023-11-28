@@ -46,6 +46,7 @@ class Ui:
         self.viewedCard["bg"] = "#6b6c6e"
         self.viewedCard["justify"] = "center"
         self.viewedCard.place(x=20,y=30,width=1153,height=331)
+        self.viewedCard["text"] = "self.c.cardTerm"
 
         self.filpCardButton=tk.Button(root)
         self.filpCardButton["anchor"] = "center"
@@ -69,7 +70,8 @@ class Ui:
 
     def filpCardBu(self):
         print("FLIP")
-        self.filpCardButton.place_forget()
+        #USE THIS LATER. it removes buttons OwO
+        #self.filpCardButton.place_forget()
 
 if __name__ == "__main__":
     root = tk.Tk()
