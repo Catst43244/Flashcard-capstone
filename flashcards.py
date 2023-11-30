@@ -125,7 +125,17 @@ class Ui:
         self.flipCardButton.place(x=460,y=270,width=264,height=73)
         self.flipCardButton["command"] = self.flipCardBu
         self.setText(self.c.cardTerm)
-
+        
+        self.restartButton=tk.Button(window)
+        self.restartButton["bg"] = "#e9e9ed"
+        ft = tkFont.Font(family='Times',size=16)
+        self.restartButton["font"] = ft
+        self.restartButton["fg"] = "#000000"
+        self.restartButton["justify"] = "center"
+        self.restartButton["text"] = "Restart"
+        self.restartButton.place(x=390,y=380,width=403,height=146)
+        self.restartButton["command"] = self.restartBu
+        self.restartButton.place_forget()
 
     def run(self):
         self.mainwindow.mainloop()
@@ -146,18 +156,21 @@ class Ui:
             pass
 
     def endScreen(self):
-            summaryText = "all cards studied. Here's what you got wrong and their answers"
+            summaryText = "All cards studied. Here's what you got wrong and their answers"
             if self.c.GAMEOVER == True:
                 summaryText = "GAMEOVER. Here's why"
             for missedCardPOS in self.c.missed:
                 card = self.c.data.iloc[missedCardPOS]
                 cardTerm = str(card.loc["TERMS"])
                 cardDef = str(card.loc["DEF"])
-                summaryText = summaryText + "\n\n" + cardTerm + "\n" + cardDef
+                summaryText = summaryText + "\n\n" + cardTerm + "\nwas\n" + cardDef
+            if len(self.c.missed) == 0:
+                summaryText = "It didn't see you"
             self.setText(summaryText)
             self.flipCardButton.place_forget()
             self.notKnowButton.place_forget()
             self.knowButton.place_forget()
+            self.restartButton.place(x=390,y=380,width=403,height=146)
 
     def notKnowBu(self):
         self.c.rerun(knownCard = False)
@@ -178,6 +191,33 @@ class Ui:
             self.displaySwitch = False
             pass
         pass
+    def restartBu(self):
+        self.c.remove = []
+        self.c.missed = []
+        self.c.data = pd.read_excel('database.xlsx')
+        self.c.termsLeft = self.c.data['TERMS'].values.tolist()      
+        self.c.POS = ra.randrange(0,len(self.c.data))
+        self.c.card = self.c.data.iloc[self.c.POS]
+        self.c.cardTerm = str(self.c.card.loc["TERMS"])
+        self.c.cardDef = str(self.c.card.loc["DEF"])
+        self.c.buttons = True
+        self.c.missedCounter = 0
+        self.c.GAMEOVER = False
+        self.c.playWarningSoundThread = threading.Thread(target=playSoundFun, name="Playsound")
+        self.c.playGameOverSoundThread = threading.Thread(target=gameOverSound, name="Playsound")
+        self.c.playWarningSoundThread.daemon = True
+        self.c.playGameOverSoundThread.daemon = True
+        #I need a funtion for this
+
+        self.displaySwitch = False
+        self.c.rerun(knownCard = False)
+        self.setText(self.c.cardTerm)
+        self.restartButton.place_forget()
+        self.flipCardButton.place(x=460,y=270,width=264,height=73)
+        self.notKnowButton.place(x=390,y=380,width=403,height=146)
+        self.knowButton.place(x=390,y=530,width=403,height=152)
+
+
 
 
 if __name__ == "__main__":
