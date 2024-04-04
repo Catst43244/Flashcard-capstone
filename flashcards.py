@@ -13,7 +13,6 @@ class cards:
     MISSED_COUNTER_WARNING_SOUND = 2
     MISSED_COUNTER_GAME_OVER = 4
     def __init__(self):
-        #problem: there are repeats in the summury screen
         self.remove = []
         self.missed = []
         self.data = pd.read_excel('database.xlsx')
@@ -23,7 +22,6 @@ class cards:
         self.cardTerm = str(self.card.loc["TERMS"])
         self.cardDef = str(self.card.loc["DEF"])
         self.buttons = True
-        #problem: have a var that takes the input into true and false 
         self.missedCounter = 0
         self.GAMEOVER = False
         self.playWarningSoundThread = threading.Thread(target=playSoundFun, name="Playsound")
